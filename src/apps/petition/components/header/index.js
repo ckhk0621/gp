@@ -12,7 +12,7 @@ const Index = ({theme, toggleTheme}) =>{
   return (
     <header className="main-header">
         <a href="#" className="logo-holder"><img src="https://api.greenpeace.org.hk/general/logo/GP-logo-2019-TC-green-%5bweb%5d-01.png" alt=""/></a>
-        <div className="header-contacts">
+        {/* <div className="header-contacts">
           {!theme.displayForm ? <ul onClick={()=>toggleTheme(!theme.displayForm)}>
               <li>
                 <div className="dummy-input">
@@ -44,13 +44,10 @@ const Index = ({theme, toggleTheme}) =>{
                   {" "}<FontAwesomeIcon icon={['fas', 'check']} />
                 </span>
               </div>
-              <div className="form-wrapper">
-                <RegistrationScreen/>
-              </div>
             </li>
           </ul>
           }
-        </div>
+        </div> */}
       </header>
   );
 }

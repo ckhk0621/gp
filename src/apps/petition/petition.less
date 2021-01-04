@@ -210,6 +210,11 @@ video {
 
 .form-wrapper{
   background-color: @other-background;
+  display: none;
+  // position: absolute;
+  // z-index: 99;
+  // top:0px;
+  // right:0px;
 }
 
 .form-close{
@@ -224,6 +229,17 @@ video {
   svg:hover{
     opacity: .8;
   }
+}
+
+
+.header-contacts li{
+  letter-spacing: initial;
+}
+
+.header-contacts .custom-form{
+  background-color: @other-background;
+  line-height: 12px;
+  text-transform:unset;
 }
 
 @media only screen and (min-width: 1065px){

@@ -5,6 +5,7 @@ import 'swiper/swiper.scss';
 import 'swiper/components/navigation/navigation.scss';
 import 'swiper/components/pagination/pagination.scss';
 import 'swiper/components/scrollbar/scrollbar.scss';
+import 'rsuite/lib/styles/index.less';
 import Header from "apps/petition/components/header";
 import Aside from "apps/petition/components/aside";
 import Main from "apps/petition/components/main";
