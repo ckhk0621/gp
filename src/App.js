@@ -9,6 +9,7 @@ import 'rsuite/lib/styles/index.less';
 import Header from "apps/petition/components/header";
 import Aside from "apps/petition/components/aside";
 import Main from "apps/petition/components/main";
+import RegistrationForm from "apps/petition/components/main/registrationForm"
 
 const App = () => {
   return (
@@ -22,6 +23,9 @@ const App = () => {
         <div className="element">
           <div className="element-item"></div>
         </div>
+      </div>
+      <div className="custom-form-wrap">
+        <RegistrationForm/>
       </div>
     </div>
   );

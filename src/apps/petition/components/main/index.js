@@ -7,9 +7,9 @@ import RegistrationScreen from "apps/petition/components/main/registrationScreen
 const Index = ({theme}) => {
   return (
     <div className="content full-height" data-pagetitle="Home slider">
-      <div className="form-wrapper">
+      {/* <div className="form-wrapper">
         <RegistrationScreen/>
-      </div>
+      </div> */}
       <div className="fl-wrap full-height hero-conatiner">
         <SlideScreen/>
         {/* <div className="hero-slider-wrap_pagination"></div> */}
