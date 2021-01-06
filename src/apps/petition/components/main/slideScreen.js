@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import Banner from "apps/petition/components/banner";
 import Carousel from "apps/petition/components/carousel";
 import * as swiperActions from "store/actions/action-types/swiper-actions";
+import * as themeActions from "store/actions/action-types/theme-actions";
 import { connect } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const SlideScreen = ({swiper, slideIndex, updateSwiperSlide}) => {
+const SlideScreen = ({swiper, slideIndex, updateSwiperSlide, togglePanel}) => {
   const currentSlide = `${slideIndex +1 >= 10 ? slideIndex +1 : `0${slideIndex +1}`}`
   const totalSlide = `${swiper.length >= 10 ? swiper.length : `0${swiper.length}`}`
 
@@ -23,6 +24,10 @@ const SlideScreen = ({swiper, slideIndex, updateSwiperSlide}) => {
       default:
         updateSwiperSlide(0)
     }
+  }
+
+  const handleTogglePanel = () => {
+    togglePanel(true)
   }
 
   return (
@@ -64,7 +69,7 @@ const SlideScreen = ({swiper, slideIndex, updateSwiperSlide}) => {
           </span>
         </div>
       </div>
-      <a href="#" className="start-btn cta-custom-display">
+      <a href="#" className="start-btn cta-custom-display" onClick={()=>handleTogglePanel()}>
         <span>
           {" "}
           立即聯署 <FontAwesomeIcon icon={['fas', 'check']} />
@@ -85,8 +90,13 @@ const mapDispatchToProps = dispatch => {
   return {
     updateSwiperSlide: (data) => {
       dispatch({ type: swiperActions.UPDATE_SWIPER_SLIDE, data });
+    },
+    togglePanel: (bol) => {
+      dispatch({ type: themeActions.TOGGLE_PANEL, bol });
     }
   };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SlideScreen);
+
+

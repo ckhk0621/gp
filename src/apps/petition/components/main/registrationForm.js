@@ -18,15 +18,21 @@ import {
 } from "rsuite";
 import { Grid, Row, Col } from "rsuite";
 
-let RegistrationForm = ({ toggleTheme }) => {
+let RegistrationForm = ({ togglePanel, toggleTheme }) => {
   const [fullForm, setFullForm] = useState(true);
   const onSubmit = (data) => console.log(data);
+
+  const closeAll = () =>{
+    togglePanel(false)
+    toggleTheme(false)
+  }
+
   return (
     <div className="custom-gp-form">
       {/* <div>守護香港未來</div>
       <div>一起發聲，要求政府優先發展棕地，放棄不負責任的「明日大嶼」方案！我們會將你守護大嶼的聲音，向政府反映。</div> */}
-      {fullForm && <div className="form-close" onClick={()=>setFullForm(false)}><FontAwesomeIcon icon={['fas', 'times-circle']} size="lg"/></div>}
-      <Form onClick={()=> !fullForm && setFullForm(true)}>
+      <div className="form-close" onClick={()=>closeAll()}><FontAwesomeIcon icon={['fas', 'times-circle']} size="lg"/></div>
+      <Form>
         <Grid fluid>
           <Row className="show-grid">
             <Col xs={24}>
@@ -37,7 +43,6 @@ let RegistrationForm = ({ toggleTheme }) => {
             </Col>
           </Row>
 
-          {fullForm && <>
             <Row className="show-grid">
             <Col xs={12}>
               <FormGroup>
@@ -93,16 +98,14 @@ let RegistrationForm = ({ toggleTheme }) => {
               </div>
             </Col>
           </Row>
-          </>}
+
+          <Row className="show-grid">
+        <Col xs={24}>
+          <div href="#" className="custom-button custom-button-active" style={{marginTop: '30px'}} onClick={()=>alert('提交表格')}>提交聯署</div>
+        </Col>
+      </Row>
         </Grid>
       </Form>
-
-      {
-        fullForm ? (<div href="#" className="custom-button custom-button-active" style={{marginTop: '30px'}} onClick={()=>alert('提交表格')}>提交聯署</div>)
-        :
-        (<div href="#" className="custom-button" style={{marginTop: '30px'}} onClick={()=>setFullForm(true)}>立即聯署</div>)
-      }
-
     </div>
   );
 };
@@ -117,6 +120,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     toggleTheme: (bol) => {
       dispatch({ type: themeActions.TOGGLE_FORM, bol });
+    },
+    togglePanel: (bol) => {
+      dispatch({ type: themeActions.TOGGLE_PANEL, bol });
     },
   };
 };

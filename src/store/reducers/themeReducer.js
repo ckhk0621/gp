@@ -3,6 +3,7 @@ import * as Actions from "../actions";
 const initState = {
   data: [],
   displayForm: false,
+  displayPanel: false,
   lastAction: null
 };
 
@@ -14,6 +15,13 @@ const themeReducer = (state = initState, action) => {
         displayForm: action.bol,
         lastAction: action.type
       };
+    case Actions.TOGGLE_PANEL:
+      return {
+        ...state,
+        displayPanel: action.bol,
+        lastAction: action.type
+      };
+  
 
     default:
       return state;
