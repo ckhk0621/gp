@@ -1,44 +1,64 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { connect } from "react-redux";
 import * as themeActions from "store/actions/action-types/theme-actions";
-import {
-  Form,
-  FormGroup,
-  FormControl,
-  ControlLabel,
-  HelpBlock,
-  errors,
-  ButtonToolbar,
-  Button,
-  InputPicker,
-  InputGroup,
-  Input,
-  Checkbox
-} from "rsuite";
+import { Schema } from 'rsuite';
+import { Form, FormGroup, FormControl, ControlLabel, InputPicker, SelectPicker, InputGroup, Input, Checkbox} from "rsuite";
 import { Grid, Row, Col } from "rsuite";
 
-let RegistrationForm = ({ togglePanel, toggleTheme }) => {
-  const [fullForm, setFullForm] = useState(true);
-  const onSubmit = (data) => console.log(data);
+let RegistrationForm = ({ togglePanel, toggleTheme, setForm, submitForm }) => {
+  const refForm = useRef();
+  const inputEl = useRef(null);
+  const { StringType, NumberType } = Schema.Types;
+  const model = Schema.Model({
+    lastName: StringType().isRequired('請填寫資料'),
+    firstName: StringType().isRequired('請填寫資料'),
+    email: StringType()
+      .isEmail('請填上有效電郵地址')
+      .isRequired('請填寫資料'),
+    phone: StringType().isRequired('This field is required.')
+  });
+
+  const TextField = (props) =>{
+    const { name, label, accepter, handleOnChange, ...rest } = props;
+    return (
+      <FormGroup>
+        <ControlLabel>{label} </ControlLabel>
+        <FormControl name={name} accepter={accepter} {...rest}/>
+      </FormGroup>
+    );
+  }
 
   const closeAll = () =>{
     togglePanel(false)
     toggleTheme(false)
   }
 
+  const handleSubmit = (isValid) =>{
+    console.log(isValid);
+    if(isValid){
+      submitForm()
+    }
+  }
+
+  const handleOnChange = (v) =>{
+    setForm(v)
+  }
+
+
   return (
     <div className="custom-gp-form">
-      {/* <div>守護香港未來</div>
-      <div>一起發聲，要求政府優先發展棕地，放棄不負責任的「明日大嶼」方案！我們會將你守護大嶼的聲音，向政府反映。</div> */}
-      <div className="form-close" onClick={()=>closeAll()}><FontAwesomeIcon icon={['fas', 'times-circle']} size="lg"/></div>
-      <Form>
+      <div className="form-close" onClick={()=>closeAll()}><FontAwesomeIcon icon={['fas', 'times-circle']} size="lg" color="lime"/></div>
+      <Form model={model} ref={refForm} formDefaultValue={{
+        email: 'mail@mail.com',
+        lastName: 'la',
+        firstName: 'fr'
+      }} onSubmit={(d)=>handleSubmit(d)} onChange={(v)=>handleOnChange(v)}>
         <Grid fluid>
           <Row className="show-grid">
             <Col xs={24}>
               <FormGroup>
-                <ControlLabel>電郵地址 Email Address</ControlLabel>
-                <FormControl name="email" type="email" />
+                <TextField name="email" label="電郵地址 Email Address" autoComplete="off"/>
               </FormGroup>
             </Col>
           </Row>
@@ -46,14 +66,12 @@ let RegistrationForm = ({ togglePanel, toggleTheme }) => {
             <Row className="show-grid">
             <Col xs={12}>
               <FormGroup>
-                <ControlLabel>姓氏 Last Name</ControlLabel>
-                <FormControl name="name" />
+                <TextField name="lastName" label="姓氏 Last Name" autoComplete="off"/>
               </FormGroup>
             </Col>
             <Col xs={12}>
               <FormGroup>
-                <ControlLabel>名字 First Name</ControlLabel>
-                <FormControl name="name" />
+                <TextField name="firstName" label="姓氏 Last Name" autoComplete="off"/>
               </FormGroup>
             </Col>
           </Row>
@@ -62,15 +80,25 @@ let RegistrationForm = ({ togglePanel, toggleTheme }) => {
             <Col xs={24}>
               <FormGroup>
                 <ControlLabel>手提號碼 Phone Number</ControlLabel>
-                <InputGroup>
-                  <InputGroup.Addon>+852</InputGroup.Addon>
-                  <Input />
-                </InputGroup>
+                <FormGroup>
+                  <SelectPicker 
+                    ref={inputEl}
+                    data={[
+                    {
+                      label: "+852",
+                      value: "+852",
+                    },
+                    {
+                      label: "+853",
+                      value: "+853"
+                    },
+                  ]} />
+                </FormGroup>
               </FormGroup>
             </Col>
           </Row>
 
-          <Row className="show-grid">
+          {/* <Row className="show-grid">
             <Col xs={24}>
               <FormGroup>
                 <ControlLabel>出生年份 Year Of Birth</ControlLabel>
@@ -89,7 +117,7 @@ let RegistrationForm = ({ togglePanel, toggleTheme }) => {
                 />
               </FormGroup>
             </Col>
-          </Row>
+          </Row> */}
 
           <Row className="show-grid">
             <Col xs={24}>
@@ -101,7 +129,7 @@ let RegistrationForm = ({ togglePanel, toggleTheme }) => {
 
           <Row className="show-grid">
         <Col xs={24}>
-          <div href="#" className="custom-button custom-button-active" style={{marginTop: '30px'}} onClick={()=>alert('提交表格')}>提交聯署</div>
+          <button type="submit" className="custom-button custom-button-active" style={{marginTop: '30px'}}>提交聯署</button>
         </Col>
       </Row>
         </Grid>
@@ -110,21 +138,19 @@ let RegistrationForm = ({ togglePanel, toggleTheme }) => {
   );
 };
 
-const mapStateToProps = ({ swiper, theme }) => {
-  return {
-    theme: theme,
-  };
-};
+// const mapStateToProps = ({ swiper, theme }) => {
+//   return {
+//     theme: theme,
+//   };
+// };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    toggleTheme: (bol) => {
-      dispatch({ type: themeActions.TOGGLE_FORM, bol });
-    },
-    togglePanel: (bol) => {
-      dispatch({ type: themeActions.TOGGLE_PANEL, bol });
-    },
+    toggleTheme: (bol) => {dispatch({ type: themeActions.TOGGLE_FORM, bol })},
+    togglePanel: (bol) => {dispatch({ type: themeActions.TOGGLE_PANEL, bol })},
+    setForm: (value) => {dispatch({ type: themeActions.SET_FORM_VALUE, value })},
+    submitForm: () => {dispatch({ type: themeActions.SUBMIT_FORM })},
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(RegistrationForm);
+export default connect(null, mapDispatchToProps)(RegistrationForm);

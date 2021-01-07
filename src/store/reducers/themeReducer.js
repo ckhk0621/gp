@@ -2,6 +2,11 @@ import * as Actions from "../actions";
 
 const initState = {
   data: [],
+  form: {
+    email: '',
+    firstName: '',
+    lastName: ''
+  },
   displayForm: false,
   displayPanel: false,
   lastAction: null
@@ -19,6 +24,13 @@ const themeReducer = (state = initState, action) => {
       return {
         ...state,
         displayPanel: action.bol,
+        lastAction: action.type
+      };
+    
+    case Actions.SET_FORM_VALUE:
+      return {
+        ...state,
+        form: action.value,
         lastAction: action.type
       };
   
