@@ -3,26 +3,31 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { connect } from "react-redux";
 import * as themeActions from "store/actions/action-types/theme-actions";
 import { Schema } from 'rsuite';
-import { Form, FormGroup, FormControl, ControlLabel, InputPicker, SelectPicker, InputGroup, Input, InputNumber, CheckPicker, Checkbox} from "rsuite";
+import { Form, FormGroup, FormControl, ControlLabel, SelectPicker, Checkbox} from "rsuite";
 import { Grid, Row, Col } from "rsuite";
+import ProgressBar from "apps/petition/components/progress";
+
+const testData = [
+  { bgcolor: "#65CC02", completed: 123000, target: 150000}
+];
 
 let RegistrationForm = ({ togglePanel, toggleTheme, setForm, submitForm }) => {
   const refForm = useRef();
   const { StringType, NumberType } = Schema.Types;
   const model = Schema.Model({
-    lastName: StringType().isRequired('請填寫資料'),
-    firstName: StringType().isRequired('請填寫資料'),
-    email: StringType()
+    Email: StringType()
       .isEmail('請填上有效電郵地址')
       .isRequired('請填寫資料'),
-    prefixNumber: StringType().isRequired('請填寫資料'),
-    phone: NumberType()
+    LastName: StringType().isRequired('請填寫資料'),
+    FirstName: StringType().isRequired('請填寫資料'),
+    MobileCountryCode: StringType().isRequired('請填寫資料'),
+    MobilePhone: NumberType()
       .isInteger('請輸入有效格式')
       .isRequired('請填寫資料')
       .addRule(value => {
         return value.toString().length === 8;
       }, '請輸入8位數字'),
-      year: StringType().isRequired('請填寫資料'),
+    Birthdate: StringType().isRequired('請填寫資料'),
       promotion: null
   });
 
@@ -70,7 +75,8 @@ let RegistrationForm = ({ togglePanel, toggleTheme, setForm, submitForm }) => {
     console.log('isValid--', isValid)
     console.log('refForm--', refForm.current.state)
     if(isValid){
-      submitForm()
+      const {formValue} = refForm.current.state
+      submitForm(formValue)
     }
   }
 
@@ -80,19 +86,38 @@ let RegistrationForm = ({ togglePanel, toggleTheme, setForm, submitForm }) => {
 
   return (
     <div className="custom-gp-form">
+      <Grid fluid>
+        <Row className="show-grid">
+          <Col xs={24}>
+          <div className="form-header">守護香港未來</div>
+          <div className="form-description">我們需要大家的力量，一同發聲，促請政府優先發展棕地，放棄不負責任的「明日大嶼」填海計劃</div>
+          </Col>
+        </Row>
+        <Row className="show-grid">
+          <Col xs={24}>
+          {testData.map((item, idx) => (
+            <ProgressBar key={idx} bgcolor={item.bgcolor} completed={item.completed} target={item.target}/>
+          ))}
+          <div className="sp-line"></div>
+          </Col>
+        </Row>
+      </Grid>
       <div className="form-close" onClick={()=>closeAll()}><FontAwesomeIcon icon={['fas', 'times-circle']} size="lg" color="lime"/></div>
       <Form model={model} ref={refForm} 
-        // formDefaultValue={{
-        //   email: 'mail@mail.com',
-        //   lastName: 'la',
-        //   firstName: 'fr'
-        // }} 
-      onSubmit={(d)=>handleSubmit(d)} onChange={(v)=>handleOnChange(v)}>
+        formDefaultValue={{
+          Email: 'mail@mail.com',
+          LastName: '陳',
+          FirstName: '大文',
+          MobilePhone: '55666688',
+          MobileCountryCode: '852',
+          Birthdate: '2000'
+        }} 
+        onSubmit={(d)=>handleSubmit(d)} onChange={(v)=>handleOnChange(v)}>
         <Grid fluid>
           <Row className="show-grid">
             <Col xs={24}>
               <FormGroup>
-                <TextField name="email" label="電郵地址 Email Address" autoComplete="off"/>
+                <TextField name="Email" label="電郵地址 Email Address" autoComplete="off"/>
               </FormGroup>
             </Col>
           </Row>
@@ -100,12 +125,12 @@ let RegistrationForm = ({ togglePanel, toggleTheme, setForm, submitForm }) => {
             <Row className="show-grid">
             <Col xs={12}>
               <FormGroup>
-                <TextField name="lastName" label="姓氏 Last Name" autoComplete="off"/>
+                <TextField name="LastName" label="姓氏 Last Name" autoComplete="off"/>
               </FormGroup>
             </Col>
             <Col xs={12}>
               <FormGroup>
-                <TextField name="firstName" label="名字 First Name" autoComplete="off"/>
+                <TextField name="FirstName" label="名字 First Name" autoComplete="off"/>
               </FormGroup>
             </Col>
           </Row>
@@ -116,26 +141,25 @@ let RegistrationForm = ({ togglePanel, toggleTheme, setForm, submitForm }) => {
                 <ControlLabel>手提號碼 Phone Number</ControlLabel>
                 <Col xs={8} style={{paddingLeft: 0}}>
                 <CustomField
-                  name="prefixNumber"
+                  name="MobileCountryCode"
                   searchable={false}
                   cleanable={false}
                   placeholder="請選擇"
-                  defaultValue="+852"
                   accepter={SelectPicker}
                   data={[{
                           label: "+852",
-                          value: "+852",
+                          value: "852",
                         },
                         {
                           label: "+853",
-                          value: "+853"
+                          value: "853"
                         },
                   ]}
                   />
                 </Col>
                 <Col xs={16} style={{paddingRight: 0}}>
                 <FormGroup>
-                  <TextFieldOnly type="number" name="phone" label="手提號碼 Phone Number" autoComplete="off"/>
+                  <TextFieldOnly type="number" name="MobilePhone" label="手提號碼 Phone Number" autoComplete="off"/>
                 </FormGroup>
                 </Col>
               </FormGroup>
@@ -147,11 +171,10 @@ let RegistrationForm = ({ togglePanel, toggleTheme, setForm, submitForm }) => {
               <FormGroup>
                 <ControlLabel>出生年份 Year Of Birth</ControlLabel>
                 <CustomField
-                  name="year"
+                  name="Birthdate"
                   searchable={false}
                   cleanable={false}
                   placeholder="請選擇"
-                  defaultValue="2000"
                   accepter={SelectPicker}
                   data={[
                     {
@@ -183,23 +206,27 @@ let RegistrationForm = ({ togglePanel, toggleTheme, setForm, submitForm }) => {
       </Row>
         </Grid>
       </Form>
+      <div className="copy-right">
+        <span><a href="https://www.greenpeace.org/hk" target="_blank">私隱政策與個人資料收集聲明</a></span>
+        <span>© GREENPEACE 2021</span>
+      </div>
     </div>
   );
 };
 
-// const mapStateToProps = ({ swiper, theme }) => {
-//   return {
-//     theme: theme,
-//   };
-// };
+const mapStateToProps = ({ swiper, theme }) => {
+  return {
+    theme: theme,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
     toggleTheme: (bol) => {dispatch({ type: themeActions.TOGGLE_FORM, bol })},
     togglePanel: (bol) => {dispatch({ type: themeActions.TOGGLE_PANEL, bol })},
     setForm: (value) => {dispatch({ type: themeActions.SET_FORM_VALUE, value })},
-    submitForm: () => {dispatch({ type: themeActions.SUBMIT_FORM })},
+    submitForm: (form) => {dispatch({ type: themeActions.SUBMIT_FORM, form })},
   };
 };
 
-export default connect(null, mapDispatchToProps)(RegistrationForm);
+export default connect(mapStateToProps, mapDispatchToProps)(RegistrationForm);

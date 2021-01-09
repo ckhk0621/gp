@@ -2,14 +2,10 @@ import * as Actions from "../actions";
 
 const initState = {
   data: [],
-  form: {
-    email: '',
-    firstName: '',
-    lastName: ''
-  },
+  form: {},
   displayForm: false,
   displayPanel: false,
-  lastAction: null
+  lastAction: null,
 };
 
 const themeReducer = (state = initState, action) => {
@@ -18,22 +14,40 @@ const themeReducer = (state = initState, action) => {
       return {
         ...state,
         displayForm: action.bol,
-        lastAction: action.type
+        lastAction: action.type,
       };
     case Actions.TOGGLE_PANEL:
       return {
         ...state,
         displayPanel: action.bol,
-        lastAction: action.type
+        lastAction: action.type,
       };
-    
+
     case Actions.SET_FORM_VALUE:
       return {
         ...state,
         form: action.value,
-        lastAction: action.type
+        lastAction: action.type,
       };
-  
+
+    case Actions.SUBMIT_FORM:
+      console.log('Look out')
+      return {
+        ...state,
+        lastAction: action.type,
+      };
+
+    case Actions.SUBMIT_FORM_SUCCESS:
+      return {
+        ...state,
+        lastAction: action.type,
+      };
+
+    case Actions.SUBMIT_FORM_FAIL:
+      return {
+        ...state,
+        lastAction: action.type,
+      };
 
     default:
       return state;

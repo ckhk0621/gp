@@ -14,7 +14,6 @@ const Panel = ({theme}) => {
     <div>
       <SlidingPane
           isOpen={theme.displayPanel}
-          title="Hey, it is optional pane title.  I can be React component too."
           from="bottom"
           width="100%"
           onRequestClose={() => setState({ isPaneOpenBottom: false })}
