@@ -31,7 +31,6 @@ const themeReducer = (state = initState, action) => {
       };
 
     case Actions.SUBMIT_FORM:
-      console.log('Look out')
       return {
         ...state,
         lastAction: action.type,

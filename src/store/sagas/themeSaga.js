@@ -6,6 +6,7 @@ import * as Actions from "../actions/action-types/theme-actions";
 const GREEENPEACE_FORM_URL = "https://cloud.greenhk.greenpeace.org/petition-pp"; // process.env.REACT_APP_WORDPRESS_URL
 
 export function* submitForm(actions) {
+  // console.log('actions.form--', actions.form)
   const formData = qs.stringify({
     ...actions.form,
     CampaignId: "7010k000000iJ7aAAE",
@@ -28,16 +29,20 @@ export function* submitForm(actions) {
     req: "post_data",
   })
 
-  try {
-    const response = yield call(() => axios.post(`${GREEENPEACE_FORM_URL}`,formData));
+  // console.log('formData--', formData)
 
-    if (response.statusText === "OK") {
-      yield put({
-        type: Actions.SUBMIT_FORM_SUCCESS
-      });
-    } else {
-      yield put({ type: Actions.SUBMIT_FORM_FAIL });
-    }
+  try {
+    yield delay(800)
+    yield put({ type: Actions.SUBMIT_FORM_SUCCESS});
+  //   const response = yield call(() => axios.post(`${GREEENPEACE_FORM_URL}`,formData));
+
+  //   if (response.statusText === "OK") {
+  //     yield put({
+  //       type: Actions.SUBMIT_FORM_SUCCESS
+  //     });
+  //   } else {
+  //     yield put({ type: Actions.SUBMIT_FORM_FAIL });
+  //   }
   } catch (e) {
     yield put({ type: Actions.SUBMIT_FORM_FAIL });
   }

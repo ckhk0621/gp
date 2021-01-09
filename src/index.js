@@ -9,7 +9,7 @@ import reportWebVitals from './reportWebVitals';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 ReactDOM.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <HelmetProvider>
       <Helmet>
         <title>Greenpeace 綠色和平 | 香港</title>
@@ -17,8 +17,8 @@ ReactDOM.render(
       <Provider store={configureStore}>
         <App />
       </Provider>
-    </HelmetProvider>
-  </React.StrictMode>,
+    </HelmetProvider>,
+  // </React.StrictMode>,
   document.getElementById('root')
 );
 

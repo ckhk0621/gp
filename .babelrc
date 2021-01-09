@@ -1,6 +1,8 @@
 // .babelrc
 {
+  "presets": ["@babel/preset-react", "@babel/preset-env"],
   "plugins": [
-    "react-hot-loader/babel"
+    "react-hot-loader/babel",
+    "emotion"
   ]
 }
