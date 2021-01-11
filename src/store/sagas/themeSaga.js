@@ -32,17 +32,19 @@ export function* submitForm(actions) {
   // console.log('formData--', formData)
 
   try {
-    yield delay(800)
-    yield put({ type: Actions.SUBMIT_FORM_SUCCESS});
-  //   const response = yield call(() => axios.post(`${GREEENPEACE_FORM_URL}`,formData));
+    // yield delay(800)
+    // yield put({ type: Actions.SUBMIT_FORM_SUCCESS});
+    const response = yield call(() => axios.post(`${GREEENPEACE_FORM_URL}`,formData));
 
-  //   if (response.statusText === "OK") {
-  //     yield put({
-  //       type: Actions.SUBMIT_FORM_SUCCESS
-  //     });
-  //   } else {
-  //     yield put({ type: Actions.SUBMIT_FORM_FAIL });
-  //   }
+    console.log('response-', response)
+
+    if (response.statusText === "OK") {
+      yield put({
+        type: Actions.SUBMIT_FORM_SUCCESS
+      });
+    } else {
+      yield put({ type: Actions.SUBMIT_FORM_FAIL });
+    }
   } catch (e) {
     yield put({ type: Actions.SUBMIT_FORM_FAIL });
   }
